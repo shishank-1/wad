@@ -1,0 +1,25 @@
+1. download docker desktop
+2. download node.js
+3. open docker desktop
+4 open vs code
+5. make a folder and open it(make folder in lowercase)
+6. download docker extension
+7. make 2 files in the folder: Dockerfile and xyz.js
+8. go to xyz.js and write:
+    console.log("name:sid");
+    console.log("class: TE");
+    console.log("subject- LP2");
+    console.log("assignment-2b");
+
+9. go to Dockerfile and write-
+    FROM node:alpine
+    COPY . /ass2b
+    CMD node /ass2b/sid.js
+
+10. save both and open new terminal in vs code
+11. check docker version by: docker --version
+12. write: node xyz.js
+13. write: docker build -t foldername .
+14. it'll build images for the folder
+15. write: docker images
+16. it'll show the latest image created

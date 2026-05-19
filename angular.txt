@@ -1,0 +1,965 @@
+Angular Assignment 2.c — Complete Step-by-Step Guide
+
+OBJECTIVE
+
+Create an Angular application that performs:
+
+1. User Registration
+2. User Login
+3. Display User Profile Data
+4. Logout Functionality
+5. Route Protection Logic
+
+The project uses:
+
+* Angular
+* TypeScript
+* Bootstrap
+* Angular Routing
+* Angular Services
+* localStorage
+
+⸻
+
+WHAT IS ANGULAR?
+
+Angular is a frontend framework developed by Google.
+
+It is used to create:
+
+* Single Page Applications (SPA)
+* Dynamic websites
+* Enterprise web applications
+
+Angular mainly uses:
+
+* HTML
+* CSS
+* TypeScript
+
+⸻
+
+IMPORTANT ANGULAR CONCEPTS
+
+Concept	Meaning
+Component	UI section/page
+Service	Shared logic/data
+Routing	Navigation between pages
+ngModel	Two-way data binding
+Interpolation	Display variables using {{ }}
+Dependency Injection	Injecting services into components
+localStorage	Browser storage
+Lifecycle Hook	Functions that run during component lifecycle
+
+⸻
+
+STEP 1 — INSTALL NODE.JS
+
+Angular requires Node.js.
+
+Download:
+https://nodejs.org
+
+Install the LTS version.
+
+Verify installation:
+
+node -v
+npm -v
+
+Explanation:
+
+* node -v → checks Node.js version
+* npm -v → checks npm version
+
+npm = Node Package Manager.
+
+Used to install libraries/packages.
+
+⸻
+
+STEP 2 — INSTALL ANGULAR CLI
+
+Command:
+
+npm install -g @angular/cli
+
+Explanation:
+
+* npm install → install package
+* -g → global installation
+* @angular/cli → Angular Command Line Interface
+
+Angular CLI helps:
+
+* create projects
+* create components
+* run application
+* build application
+
+Verify installation:
+
+ng version
+
+⸻
+
+STEP 3 — CREATE ANGULAR PROJECT
+
+Command:
+
+ng new user-mgmnt-app
+
+Angular asks:
+
+Would you like to add Angular routing?
+
+Choose:
+
+Yes
+
+Then:
+
+for ssr- choose: No
+
+Then:
+
+Which stylesheet format would you like to use?
+
+Choose:
+
+CSS
+
+Explanation:
+
+This command creates:
+
+* Angular project structure
+* configuration files
+* node_modules
+* TypeScript setup
+* routing setup
+
+⸻
+
+STEP 4 — OPEN PROJECT
+
+cd user-mgmnt-app
+
+Explanation:
+
+cd = change directory.
+
+Moves terminal into Angular project folder.
+
+⸻
+
+STEP 5 — RUN APPLICATION
+
+ng serve
+
+Explanation:
+
+Runs Angular development server.
+
+Open browser:
+
+http://localhost:4200
+
+You should see Angular default page.
+
+⸻
+
+STEP 6 — UNDERSTANDING PROJECT STRUCTURE
+
+Main folders/files:
+
+src/
+ ├── app/
+ │   ├── app.ts
+ │   ├── app.html
+ │   ├── app.routes.ts
+ │   ├── app.config.ts
+ │
+ │   ├── login/
+ │   ├── register/
+ │   ├── profile/
+ │
+ ├── styles.css
+ ├── main.ts
+
+Explanation:
+
+File	Purpose
+main.ts	Entry point
+app.ts	Root component
+app.html	Root HTML
+app.routes.ts	Routing configuration
+app.config.ts	App configuration
+styles.css	Global CSS
+
+⸻
+
+STEP 7 — CREATE COMPONENTS
+
+Create Register component:
+
+ng g c register
+
+Create Login component:
+
+ng g c login
+
+Create Profile component:
+
+ng g c profile
+
+Explanation:
+
+ng g c = Angular generate component.
+
+Each component contains:
+
+* HTML
+* CSS
+* TypeScript
+* spec file
+
+⸻
+
+STEP 8 — CREATE SERVICE
+
+Command:
+
+ng generate service services/user
+
+Explanation:
+
+Service stores:
+
+* shared logic
+* shared data
+
+Instead of writing logic in multiple components.
+
+⸻
+
+STEP 9 — CONFIGURE ROUTES
+
+Open:
+
+src/app/app.routes.ts
+
+Code:
+
+import { Routes } from '@angular/router';
+import { RegisterComponent } from './register/register';
+import { LoginComponent } from './login/login';
+import { ProfileComponent } from './profile/profile';
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'register',
+    pathMatch: 'full'
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
+  }
+];
+
+Explanation:
+
+This creates routes/pages:
+
+Route	Component
+/register	Register page
+/login	Login page
+/profile	Profile page
+
+redirectTo means:
+
+Open register page by default.
+
+⸻
+
+STEP 10 — CONFIGURE ROOT COMPONENT
+
+Open:
+
+src/app/app.ts
+
+Code:
+
+import { Component } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RouterLink],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
+})
+export class App {
+}
+
+Explanation:
+
+Item	Purpose
+RouterOutlet	Displays active page
+RouterLink	Navigation links
+standalone	Standalone component
+
+⸻
+
+STEP 11 — ROOT HTML
+
+Open:
+
+src/app/app.html
+
+Code:
+
+<nav class="navbar navbar-dark bg-dark px-4">
+  <a class="navbar-brand text-white">
+    User Management App
+  </a>
+  <div>
+    <a
+      routerLink="/register"
+      class="btn btn-outline-light me-2"
+    >
+      Register
+    </a>
+    <a
+      routerLink="/login"
+      class="btn btn-outline-light me-2"
+    >
+      Login
+    </a>
+    <a
+      routerLink="/profile"
+      class="btn btn-outline-light"
+    >
+      Profile
+    </a>
+  </div>
+</nav>
+<div class="container mt-5">
+  <router-outlet></router-outlet>
+</div>
+
+Explanation:
+
+router-outlet displays:
+
+* register page
+* login page
+* profile page
+
+depending on active route.
+
+⸻
+
+STEP 12 — REGISTER COMPONENT
+
+Open:
+
+src/app/register/register.ts
+
+Code:
+
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../services/user';
+import { Router } from '@angular/router';
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './register.html',
+  styleUrl: './register.css'
+})
+export class RegisterComponent {
+  name = '';
+  email = '';
+  password = '';
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
+  register() {
+    const user = {
+      name: this.name,
+      email: this.email,
+      password: this.password
+    };
+    this.userService.registerUser(user);
+    alert('Registration Successful');
+    this.router.navigate(['/login']);
+  }
+}
+
+Explanation:
+
+Code	Meaning
+FormsModule	Enables Angular forms
+constructor	Dependency injection
+Router	Navigation
+register()	Saves user data
+
+⸻
+
+STEP 13 — REGISTER HTML
+
+Open:
+
+src/app/register/register.html
+
+Code:
+
+<div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+  <h2 class="text-center mb-4">
+    Register User
+  </h2>
+  <form (ngSubmit)="register()">
+    <div class="mb-3">
+      <label class="form-label">
+        Name
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="name"
+        name="name"
+        required
+      >
+    </div>
+    <div class="mb-3">
+      <label class="form-label">
+        Email
+      </label>
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="email"
+        name="email"
+        required
+      >
+    </div>
+    <div class="mb-4">
+      <label class="form-label">
+        Password
+      </label>
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="password"
+        name="password"
+        required
+      >
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+    >
+      Register
+    </button>
+  </form>
+</div>
+
+Explanation:
+
+Important concept:
+
+[(ngModel)]
+
+This is two-way data binding.
+
+Synchronizes:
+
+* input field
+* TypeScript variable
+
+⸻
+
+STEP 14 — LOGIN COMPONENT
+
+Open:
+
+src/app/login/login.ts
+
+Code:
+
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../services/user';
+import { Router } from '@angular/router';
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './login.html',
+  styleUrl: './login.css'
+})
+export class LoginComponent {
+  email = '';
+  password = '';
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
+  login() {
+    const success = this.userService.loginUser(
+      this.email,
+      this.password
+    );
+    if(success) {
+      alert('Login Successful');
+      this.router.navigate(['/profile']);
+    } else {
+      alert('Invalid Credentials');
+    }
+  }
+}
+
+Explanation:
+
+Checks:
+
+* email
+* password
+
+against stored data.
+
+⸻
+
+STEP 15 — LOGIN HTML
+
+Open:
+
+src/app/login/login.html
+
+Code:
+
+<div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+  <h2 class="text-center mb-4">
+    Login User
+  </h2>
+  <form (ngSubmit)="login()">
+    <div class="mb-3">
+      <label class="form-label">
+        Email
+      </label>
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="email"
+        name="email"
+        required
+      >
+    </div>
+    <div class="mb-4">
+      <label class="form-label">
+        Password
+      </label>
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="password"
+        name="password"
+        required
+      >
+    </div>
+    <button
+      type="submit"
+      class="btn btn-success w-100"
+    >
+      Login
+    </button>
+  </form>
+</div>
+
+⸻
+
+STEP 16 — USER SERVICE
+
+Open:
+
+src/app/services/user.service.ts
+
+Code:
+
+import { Injectable } from '@angular/core';
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  registerUser(user: any) {
+    localStorage.setItem(
+      'user',
+      JSON.stringify(user)
+    );
+  }
+  getUser() {
+    return JSON.parse(
+      localStorage.getItem('user') || '{}'
+    );
+  }
+  loginUser(email: string, password: string): boolean {
+    const user = this.getUser();
+    if (
+      user.email === email &&
+      user.password === password
+    ) {
+      localStorage.setItem(
+        'isLoggedIn',
+        'true'
+      );
+      return true;
+    }
+    return false;
+  }
+  logoutUser() {
+    localStorage.removeItem('isLoggedIn');
+  }
+  isLoggedIn(): boolean {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  }
+}
+
+Explanation:
+
+Function	Purpose
+registerUser()	Stores user
+getUser()	Retrieves user
+loginUser()	Validates login
+logoutUser()	Removes session
+isLoggedIn()	Checks login status
+
+⸻
+
+STEP 17 — PROFILE COMPONENT
+
+Open:
+
+src/app/profile/profile.ts
+
+Code:
+
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserService } from '../services/user';
+import { Router } from '@angular/router';
+@Component({
+  selector: 'app-profile',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './profile.html',
+  styleUrl: './profile.css'
+})
+export class ProfileComponent implements OnInit {
+  user: any = {};
+  loggedIn = false;
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
+  ngOnInit(): void {
+    this.loggedIn = this.userService.isLoggedIn();
+    if(this.loggedIn) {
+      this.user = this.userService.getUser();
+    }
+  }
+  logout() {
+    this.userService.logoutUser();
+    alert('Logged Out Successfully');
+    this.router.navigate(['/login']);
+  }
+}
+
+Explanation:
+
+ngOnInit() is lifecycle hook.
+
+Runs automatically when component loads.
+
+⸻
+
+STEP 18 — PROFILE HTML
+
+Open:
+
+src/app/profile/profile.html
+
+Code:
+
+<div *ngIf="loggedIn; else notLoggedIn">
+  <div
+    class="card shadow p-4 mx-auto"
+    style="max-width: 500px;"
+  >
+    <h2 class="text-center mb-4">
+      User Profile
+    </h2>
+    <div class="mb-3">
+      <h5>Name</h5>
+      <p class="form-control">
+        {{ user.name }}
+      </p>
+    </div>
+    <div class="mb-4">
+      <h5>Email</h5>
+      <p class="form-control">
+        {{ user.email }}
+      </p>
+    </div>
+    <button
+      class="btn btn-danger w-100"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div>
+</div>
+<ng-template #notLoggedIn>
+  <div
+    class="card shadow p-4 mx-auto text-center"
+    style="max-width: 500px;"
+  >
+    <h3 class="mb-3">
+      Access Denied
+    </h3>
+    <p>
+      Please login or create an account first.
+    </p>
+  </div>
+</ng-template>
+
+Explanation:
+
+Syntax	Purpose
+*ngIf	Conditional rendering
+{{ }}	Interpolation
+(click)	Click event binding
+
+⸻
+
+STEP 19 — INSTALL BOOTSTRAP
+
+Command:
+
+npm install bootstrap
+
+Explanation:
+
+Bootstrap provides:
+
+* styling
+* responsive design
+* buttons
+* cards
+* forms
+
+⸻
+
+STEP 20 — CONNECT BOOTSTRAP
+
+Open:
+
+angular.json
+
+Find:
+
+"styles": [
+  "src/styles.css"
+]
+
+Replace with:
+
+"styles": [
+  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+  "src/styles.css"
+]
+
+Explanation:
+
+Loads Bootstrap CSS globally.
+
+⸻
+
+STEP 21 — GLOBAL CSS
+
+Open:
+
+src/styles.css
+
+Code:
+
+body {
+  background-color: #f5f7fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.card {
+  border-radius: 15px;
+  border: none;
+}
+.navbar {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+⸻
+
+STEP 22 — SSR ISSUE
+
+Problem:
+
+Angular 17+ automatically created:
+
+* SSR
+* Hydration
+* Server rendering
+
+This caused errors like:
+
+localStorage is not defined
+
+Reason:
+
+localStorage exists only in browser.
+
+SSR runs code on server first.
+
+⸻
+
+STEP 23 — REMOVE SSR
+
+Delete these from angular.json:
+
+"server": "src/main.server.ts"
+"outputMode": "server"
+"ssr": {
+  "entry": "src/server.ts"
+}
+
+Delete these files:
+
+src/main.server.ts
+src/server.ts
+src/app/app.config.server.ts
+src/app/app.routes.server.ts
+
+⸻
+
+STEP 24 — CLEAR CACHE
+
+Command:
+
+rm -rf .angular
+
+Explanation:
+
+Removes Angular cached build files.
+
+⸻
+
+STEP 25 — RUN FINAL APPLICATION
+
+Command:
+
+ng serve
+
+Open:
+
+http://localhost:4200
+
+⸻
+
+FINAL APPLICATION FLOW
+
+1. Register user
+2. Login user
+3. Show profile
+4. Logout
+5. Access denied after logout
+
+⸻
+
+IMPORTANT VIVA QUESTIONS
+
+What is Angular?
+
+Angular is a frontend framework developed by Google used for building single page applications.
+
+⸻
+
+What is a Component?
+
+A component is a reusable UI block consisting of:
+
+* HTML
+* CSS
+* TypeScript
+
+⸻
+
+What is a Service?
+
+A service stores shared logic and data used by multiple components.
+
+⸻
+
+What is Routing?
+
+Routing enables navigation between pages/components.
+
+⸻
+
+What is ngModel?
+
+ngModel is used for two-way data binding.
+
+⸻
+
+What is localStorage?
+
+Browser storage used to store small data persistently.
+
+⸻
+
+What is Dependency Injection?
+
+Injecting services/classes into components through constructor.
+
+⸻
+
+What is ngOnInit?
+
+Lifecycle hook that runs automatically when component initializes.
+
+⸻
+
+What is Bootstrap?
+
+Bootstrap is a CSS framework used for responsive UI design.
+
+⸻
+
+FINAL OUTPUT FEATURES
+
+✔ User Registration
+✔ User Login
+✔ User Profile
+✔ Logout
+✔ Route Protection Logic
+✔ Bootstrap UI
+✔ Angular Routing
+✔ Angular Service
+✔ localStorage Session Handling
